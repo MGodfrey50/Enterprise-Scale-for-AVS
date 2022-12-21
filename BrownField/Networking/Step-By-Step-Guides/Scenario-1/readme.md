@@ -5,12 +5,11 @@ with default route propagation" [Click here](https://docs.microsoft.com/en-us/az
 
 ExpressRoute & Global Reach </br>
 
-![](./media/image1.png) </br></br>
+![](./media/image1a.png) </br></br>
 
 **Require infrastructure - Step by Step **
 
-1. A virtual network with 3 subnets a jumpbox and application gateway and a
-   virtual network gateway.
+1. A virtual network with 3 subnets containing a jumpbox and application gateway and (optional) a virtual network gateway.
 2. A secured vWAN hub
 
 3. An AVS environment with 2 servers running a web site (We will walk
@@ -18,7 +17,7 @@ ExpressRoute & Global Reach </br>
 
 4. A connection to on-premises network via ExpressRoute, otherwise you can
    simulate this with an ExpressRoute (ExR) connection from another vNet to
-   the vWAN hub.
+   the vWAN hub (this is using the optional virtual network gateway mentioned in 1. above).
 
 5. For this lab, we will build all resources in the same region.
 
@@ -61,29 +60,29 @@ ExpressRoute & Global Reach </br>
 4)  Create a jumpbox virtual machine on the 'Servers' subnet defined above. Build it in the\AVS-Scenario-1 resource group, select a Windows server (2016 or later). Choose an appropriate size (suggested is Standard_DS1_v2). Fill in the appropriate fields as shown, then click on the 'Next: Disks' . Leave the defaults, then click on 'Next : Networking'
     
 
-a.  Select the virtual network we created above 'AVS-Scenario-1-Jumpbox-vNet'
+        a.  Select the virtual network we created above 'AVS-Scenario-1-Jumpbox-vNet'
 
-b.  Select the subnet 'Servers'
+        b.  Select the subnet 'Servers'
 
-c.  Leave the reset of the defaults as shown.
+        c.  Leave the reset of the defaults as shown.
 
 ![](./media/image5.png) </br>
 
 ![](./media/image6.png) </br>
 
-d.  Click on 'Review + create' then click on 'Create' to complete the
-    creation of the Scenario-1-Jumpbox
+        d.  Click on 'Review + create' then click on 'Create' to complete the
+            creation of the Scenario-1-Jumpbox
 </br></br>
-</br>
 
 5)  Create a route table called 'Home-Office-Internet-Access'</br> </br>
 
 ![](./media/image7.png) </br></br>
-a.  Create the route table, be sure to create it in the correct region.
 
-b.  Leave the Propagate gateway routes as 'Yes'
+        a.  Create the route table, be sure to create it in the correct region.
 
-c.  Click 'Review + create' then click 'Create'
+        b.  Leave the Propagate gateway routes as 'Yes'
+
+        c.  Click 'Review + create' then click 'Create'
 
 > When the route table build is complete, go to the resource, select
 > Routes and + Add
@@ -120,29 +119,28 @@ and **record your public IP address**.
 
 > Go to the Scenario-1-vWAN and select 'Hubs' and then click on the '+
 > New Hub'
-
 ![](./media/image12.png) </br></br>
 
 Make sure the region is set to wherever you
 are creating your build.
 
-a.  Add the name 'Scenario-1-vWAN-Hub'
+        a.  Add the name 'Scenario-1-vWAN-Hub'
 
-b.  Add hub private IP address of 10.40.216.0/23
+        b.  Add hub private IP address of 10.40.216.0/23
 
-c.  Set the Virtual hub capacity to '2 Routing Infrastructure Units.
+        c.  Set the Virtual hub capacity to '2 Routing Infrastructure Units.
 
-d.  Click "Next : Site to site", (add nothing)
+        d.  Click "Next : Site to site", (add nothing)
 
-e.  Click "Next : Point to site", (add nothing)
+        e.  Click "Next : Point to site", (add nothing)
 
-f.  Click "Next : ExpressRoute"
+        f.  Click "Next : ExpressRoute"
 
 ![](./media/image13.png) </br></br>
 
-g.  On the ExpressRoute tab, select 'Yes' to create an ExpressRoute
-    Gateway and select '1 scale unit -- 2 Gbps' for the 'Gateway scale
-    units' option.
+        g.  On the ExpressRoute tab, select 'Yes' to create an ExpressRoute
+            Gateway and select '1 scale unit -- 2 Gbps' for the 'Gateway scale
+            units' option.
 
 ![](./media/image14.png) </br></br>
 
@@ -180,6 +178,7 @@ There is a video on configuring AVS located here:
     c.  Then from the top left, click on '+ Add connection'.
     
     d.  Create a connection name\
+
         Select the hub that was just created (Scenario-1-vWAN-Hub)\
         Make sure the correct subscription has been selected\
         Choose the virtual network were the jumpbox was instantiated.
@@ -198,7 +197,6 @@ Scenario-1-Jumpbox. When it's complete it will look like this.
 ![](./media/image16.png) </br></br>
 
 2.  Connect the AVS private cloud to vWAN hub.
-
 
     a.  Open up your AVS instance
     
@@ -259,25 +257,26 @@ the Appendix for more detailed instructions.
 5.  Testing connectivity
 
 
-    a.  On the AVS page, click on the 'Identity' option and bring up the
-        screen with the Login Credential.
-        
+        a.  On the AVS page, click on the 'Identity' option and bring up the
+            screen with the Login Credential.
+            
     ![](./media/image21.png) </br></br>
-    b.  Next, RDP into the Scenario-1-Jumpbox. Turn off IE Enhanced Security
-        for Administrators (Server Manager/Local Server)
-    
-    c.  Open up the browser and enter the IP address of vCenter, you need to
-        use Https://10.250.176.2 (in this lab demo.) This should take you to
-        the vCenter logon page.
-    
-    d.   You will see a 'Your connection isn't
-        private'. Click through the logon pages until you can see the login
-        screen for AVS
-    
+
+        b.  Next, RDP into the Scenario-1-Jumpbox. Turn off IE Enhanced Security
+            for Administrators (Server Manager/Local Server)
+        
+        c.  Open up the browser and enter the IP address of vCenter, you need to
+            use Https://10.250.176.2 (in this lab demo.) This should take you to
+            the vCenter logon page.
+        
+        d.   You will see a 'Your connection isn't
+            private'. Click through the logon pages until you can see the login
+            screen for AVS
+            
     ![](./media/image22.png)</br></br>
-    
-    e.  Login using the <cloudadmin@vsphere.local> and the password copied
-        from the Identity portal screen (shown above).
+        
+        e.  Login using the <cloudadmin@vsphere.local> and the password copied
+            from the Identity portal screen (shown above).
 
 > Connectivity through the vWAN's hub has now been established.
 
@@ -297,31 +296,31 @@ two virtual machines and add IIS.
 **Portal**
 
 
-    a.  From the portal, click on 'Segments' then click '+ Add' to create a
-        new segment
-    
-    b.  Add the name Scenario-1-VMware-Subnet
-    
-    c.  Add the gateway subnet 10.2.100.1/24 (this is correct, this is how
-        VMware adds address space)
-    
-    d.  Add a DHCP range (don't have to do this, just makes is easy to see,
-        first server will have IP an address of 10.2.100.100 and second
-        server will have IP an address of 10.2.100.101)
-    
-    e.  Click 'OK' and wait until provisioning has completed (check using the notification icon).
+        a.  From the portal, click on 'Segments' then click '+ Add' to create a
+            new segment
+        
+        b.  Add the name Scenario-1-VMware-Subnet
+        
+        c.  Add the gateway subnet 10.2.100.1/24 (this is correct, this is how
+            VMware adds address space)
+        
+        d.  Add a DHCP range (don't have to do this, just makes is easy to see,
+            first server will have IP an address of 10.2.100.100 and second
+            server will have IP an address of 10.2.100.101)
+        
+        e.  Click 'OK' and wait until provisioning has completed (check using the notification icon).
 
 ![](./media/image23.png) </br></br>
 
-    f.  Select DHCP from the portal and click '+ Add'.
-    
-    g.  Server name 'Scenario-1-DHCPServer
-    
-    h.  Server IP addresses 10.2.101.0/24
-    
-    i.  Lease time 86400 seconds
-    
-    j.  Click 'OK' and wait for it to complete.
+        f.  Select DHCP from the portal and click '+ Add'.
+        
+        g.  Server name 'Scenario-1-DHCPServer
+        
+        h.  Server IP addresses 10.2.101.0/24
+        
+        i.  Lease time 86400 seconds
+        
+        j.  Click 'OK' and wait for it to complete.
 
 ![](./media/image24.png) </br></br>
 
@@ -400,115 +399,115 @@ two virtual machines and add IIS.
     datastore](https://www.youtube.com/watch?v=kO2BV1pMQtc&t=15s))
 
 
-a.  Log into the vCenter console as shown in Part 3, #3, d. above.
+    a.  Log into the vCenter console as shown in Part 3, #3, d. above.
 
-b.  Right click on the Cluster-1 and select 'New Virtual Machine'
-
-
-    i.   Create a new virtual machine > Next
-    ii.  Select a name and folder Virtual Machine Name: Scenario-1-Web01, leave the default location as SDDC-Datacenter > Next
-    iii. Select a compute resource: Cluster-1 > Next
-    iv.  Select storage (default): vsanDatastore > Next
-    v.   Select compatibility (default): ESXi 6.7 and later > Next
-    vi.  Select a guest OS, Guest OS family: Windows Guest OS version Microsoft Windows Server 2016 or later (64 bit) > Next
-    vii.  Customize hardware, leave defaults except
-        a.  Under New Network, browse and select 'Scenario-1-Webservers'
-        b.  Under 'New CD/DVD Drive' select 'Content Library or Datastore' (wherever the ISO files are stored).
-        c.  Select the Windows server ISO to be used for the OS installation.
-        d.  Click the 'Connect' radio button and confirm, should look like
-            this:
-
-> ![](./media/image32.png) </br>
-
-        e.  Click \> Next
+    b.  Right click on the Cluster-1 and select 'New Virtual Machine'
 
 
-    viii. Verify the configuration and click \> FINISH
+        i.   Create a new virtual machine > Next
+        ii.  Select a name and folder Virtual Machine Name: Scenario-1-Web01, leave the default location as SDDC-Datacenter > Next
+        iii. Select a compute resource: Cluster-1 > Next
+        iv.  Select storage (default): vsanDatastore > Next
+        v.   Select compatibility (default): ESXi 6.7 and later > Next
+        vi.  Select a guest OS, Guest OS family: Windows Guest OS version Microsoft Windows Server 2016 or later (64 bit) > Next
+        vii.  Customize hardware, leave defaults except
+            a.  Under New Network, browse and select 'Scenario-1-Webservers'
+            b.  Under 'New CD/DVD Drive' select 'Content Library or Datastore' (wherever the ISO files are stored).
+            c.  Select the Windows server ISO to be used for the OS installation.
+            d.  Click the 'Connect' radio button and confirm, should look like
+                this:
+
+    > ![](./media/image32.png) </br>
+
+            e.  Click \> Next
 
 
-c.  Power on the new server Scenario-1-Web01 and go through the Windows
-    setup process. (Note you may have to issue a reboot from the console
-    to see the 'Press to boot from CD' option -- if you see 'EFI Network
-    -- unsuccessful.', reboot using the command prompt in the top right
-    hand corner of the console.)
+        viii. Verify the configuration and click \> FINISH
 
-    a.  Select language and keyboard settings (default for most)
-    
-    b.  Select 'Desktop Experience' when choosing the OS
-    
-    c.  Select 'Custom: Install Windows only (advanced)
-    
-    d.  Leave the default Drive 0 Unallocated Space, click Next
-    
-    e.  Enter your administrator password and click 'Finish'
 
-d.  Log into the Scenario-1-Web01 server
+    c.  Power on the new server Scenario-1-Web01 and go through the Windows
+        setup process. (Note you may have to issue a reboot from the console
+        to see the 'Press to boot from CD' option -- if you see 'EFI Network
+        -- unsuccessful.', reboot using the command prompt in the top right
+        hand corner of the console.)
 
-    a.  Set the IE Enhanced Security Configuration for Administrators to
-        'Off'
-    
-    b.  Set the Remote desktop to 'Enabled'
-    
-    c.  Optional -- change the firewall inbound to allow ICMP on IPv4
-    
-    d.  Launch IE and record your Internet IP address using
-        <https://www.ipconfig.com>. If you don't get an IP address,
-        that's fine, if you do, it likely means that the Internet access
-        setting in the Azure AVS portal / Workload Networking / Internet
-        Connectivity has been enabled. Check that the setting has been
-        changed to 'Do not connect or connect using default route from
-        Azure'.
+        a.  Select language and keyboard settings (default for most)
+        
+        b.  Select 'Desktop Experience' when choosing the OS
+        
+        c.  Select 'Custom: Install Windows only (advanced)
+        
+        d.  Leave the default Drive 0 Unallocated Space, click Next
+        
+        e.  Enter your administrator password and click 'Finish'
 
-> ![](./media/image33.png) </br></br>
+    d.  Log into the Scenario-1-Web01 server
 
-e.  RDP from the Scenario-1-Jumpbox to the Scenario-1-Web01 server and
-    install IIS on the Scenario-1-Web01 server. (Server manager, add
-    roles, select IIS)
+        a.  Set the IE Enhanced Security Configuration for Administrators to
+            'Off'
+        
+        b.  Set the Remote desktop to 'Enabled'
+        
+        c.  Optional -- change the firewall inbound to allow ICMP on IPv4
+        
+        d.  Launch IE and record your Internet IP address using
+            <https://www.ipconfig.com>. If you don't get an IP address,
+            that's fine, if you do, it likely means that the Internet access
+            setting in the Azure AVS portal / Workload Networking / Internet
+            Connectivity has been enabled. Check that the setting has been
+            changed to 'Do not connect or connect using default route from
+            Azure'.
 
-f.  Repeat step "3)" of this section (Part 3) to create the Scenario-1-Web02 server
+    > ![](./media/image33.png) </br></br>
 
-## Part 4 -- Configure vWAN Secure Hub & Push default route (0.0.0.0/0)
+    e.  RDP from the Scenario-1-Jumpbox to the Scenario-1-Web01 server and
+        install IIS on the Scenario-1-Web01 server. (Server manager, add
+        roles, select IIS)
 
-In this section, the secure vWAN hub Azure Firewall is deployed and a
-Firewall policy is applied to enable traffic flow to and from the
-Internet. If you did not add the "Home-Office-Internet-Access" route
-table to the 'Servers' subnet, RDP access to the Scenario-1-Jumpbox will
-change.
-</br></br>
-1)  Adding the Azure Firewall
+    f.  Repeat step "3)" of this section (Part 3) to create the Scenario-1-Web02 server
 
-    a.  In the Azure portal, select vWAN
+    ## Part 4 -- Configure vWAN Secure Hub & Push default route (0.0.0.0/0)
 
-    b.  Select on the Scenario-1-vWAN
+    In this section, the secure vWAN hub Azure Firewall is deployed and a
+    Firewall policy is applied to enable traffic flow to and from the
+    Internet. If you did not add the "Home-Office-Internet-Access" route
+    table to the 'Servers' subnet, RDP access to the Scenario-1-Jumpbox will
+    change.
+    </br></br>
+    1)  Adding the Azure Firewall
 
-    c.  Select Scenario-1-vWAN-Hub
+        a.  In the Azure portal, select vWAN
 
-    d.  Select Azure Firewall and Firewall Manger
+        b.  Select on the Scenario-1-vWAN
 
-    e.  Make sure the checkbox next to Scenario-1-vWAN-Hub is selected
+        c.  Select Scenario-1-vWAN-Hub
 
-    ![](./media/image34.png) </br>
+        d.  Select Azure Firewall and Firewall Manger
 
-    
-    f.  Click on 'Next : AzureFirewall'
+        e.  Make sure the checkbox next to Scenario-1-vWAN-Hub is selected
 
-    g.  Select Azure Firewall 'Enabled' (default)
+        ![](./media/image34.png) </br>
 
-    h.  Azure Firewall tier -- Standard (default) (Select Premium if you
-        want the additional features [Azure Firewall Premium features \|
-        Microsoft
-        Docs](https://docs.microsoft.com/en-us/azure/firewall/premium-features))
+        
+        f.  Click on 'Next : AzureFirewall'
 
-    i.  Change the number or public IP address to 2
+        g.  Select Azure Firewall 'Enabled' (default)
 
-    j.  Leave the Default Deny Policy
+        h.  Azure Firewall tier -- Standard (default) (Select Premium if you
+            want the additional features [Azure Firewall Premium features \|
+            Microsoft
+            Docs](https://docs.microsoft.com/en-us/azure/firewall/premium-features))
 
-    ![](./media/image35.png) </br></br>
+        i.  Change the number or public IP address to 2
 
-    k.  Leave security partner provider 'Disabled', click 'Next : Review and
-        confirm'
+        j.  Leave the Default Deny Policy
 
-    l.  Click 'Confirm'
+        ![](./media/image35.png) </br></br>
+
+        k.  Leave security partner provider 'Disabled', click 'Next : Review and
+            confirm'
+
+        l.  Click 'Confirm'
 
 > Note: This deployment takes under 10 minutes to complete.
 
@@ -573,42 +572,42 @@ change.
 
 [RDP Access From Home Office (Internet)]{.underline}
 
-    a.  In the blue search bar at the top of the portal window, search for
-        'Firewall Policies' then select Scenario-1-FWPolicy
-    
-    b.  Select 'DNAT rules' and click on the '+ Add a rule collection'
-    
-    c.  Name: Scenario-1-DNAT-Rule-Collection
-    
-    d.  Rule collection type: DNAT
-    
-    e.  Priority: 300
-    
-    f.  Rule collection action: Allow
-    
-    g.  Rule collection group: DefaultDnatRuleCollectionGroup
+        a.  In the blue search bar at the top of the portal window, search for
+            'Firewall Policies' then select Scenario-1-FWPolicy
+        
+        b.  Select 'DNAT rules' and click on the '+ Add a rule collection'
+        
+        c.  Name: Scenario-1-DNAT-Rule-Collection
+        
+        d.  Rule collection type: DNAT
+        
+        e.  Priority: 300
+        
+        f.  Rule collection action: Allow
+        
+        g.  Rule collection group: DefaultDnatRuleCollectionGroup
 
 ![](./media/image38.png) </br></br>
 
 Under the Rules section enter the following
 
-    h.  Name: Allow-Home-Office (any appropriate descriptor)
-    
-    i.  Source type: IP Address
-    
-    j.  Source: Your internet IP address (eg. 24.68.78.190)
-    
-    k.  Protocol: TCP
-    
-    l.  Destination port: 3389
-    
-    m.  Destination type: IP address
-    
-    n.  Destination: IP address of the Azure Firewall
-    
-    o.  Translated address: IP address of Scenario-1-Web01
-    
-    p.  Translated port: 3389
+        h.  Name: Allow-Home-Office (any appropriate descriptor)
+        
+        i.  Source type: IP Address
+        
+        j.  Source: Your internet IP address (eg. 24.68.78.190)
+        
+        k.  Protocol: TCP
+        
+        l.  Destination port: 3389
+        
+        m.  Destination type: IP address
+        
+        n.  Destination: IP address of the Azure Firewall
+        
+        o.  Translated address: IP address of Scenario-1-Web01
+        
+        p.  Translated port: 3389
 
 > ![](./media/image39.png) </br></br>
 Repeat this rule for Scenario-1-Web02,
@@ -618,7 +617,7 @@ Repeat this rule for Scenario-1-Web02,
 >
 > To find the second IP address, follow the breadcrumbs shown here:
 
-    q.  Click 'Add' to create the rule collection and rules.
+        q.  Click 'Add' to create the rule collection and rules.
 </br></br>
 
 
@@ -645,17 +644,17 @@ Repeat this rule for Scenario-1-Web02,
 
 Under the Rules section enter the following
 
-a.  Name: Allow-IPAddress.com
+        a.  Name: Allow-IPAddress.com
 
-b.  Source type: IP Address
+        b.  Source type: IP Address
 
-c.  Source: \*
+        c.  Source: \*
 
-d.  Protocol: Http:80,Https:443
+        d.  Protocol: Http:80,Https:443
 
-e.  Destination type: FQDN
+        e.  Destination type: FQDN
 
-f.  Destination: \*.ipaddress.com
+        f.  Destination: \*.ipaddress.com
 
 > Click 'Add' to save the rule collection.
 
@@ -664,15 +663,15 @@ f.  Destination: \*.ipaddress.com
 Select Firewall Manager (search for it in the blue search bar in the
 Azure portal)
 
-    a.  Select Azure Firewall Policies
-    
-    b.  Select the "Scenario-1-FWPolicy
-    
-    c.  Click on Manage Associations
-    
-    d.  Select the Scenario-1-vWAN hub
-    
-    e.  Click 'Add' at the bottom of the page to complete the association.
+        a.  Select Azure Firewall Policies
+        
+        b.  Select the "Scenario-1-FWPolicy
+        
+        c.  Click on Manage Associations
+        
+        d.  Select the Scenario-1-vWAN hub
+        
+        e.  Click 'Add' at the bottom of the page to complete the association.
 
 ![](./media/image41.png) </br></br>
 
@@ -685,30 +684,30 @@ The result in should look like this:
 
 > Go to the Firewall Manager portal screen.
 
-    a.  Select 'Virtual Hubs'
+        a.  Select 'Virtual Hubs'
 
 ![](./media/image43.png) </br></br>
 
-    b.  Select the 'Scenario-1-vWAN-Hub' and click on it. This will launch
+        b.  Select the 'Scenario-1-vWAN-Hub' and click on it. This will launch
         the 'Security configuration' portal page (below).
     
-    c.  Select 'Security configuration'
+        c.  Select 'Security configuration'
 
 ![](./media/image44.png) </br></br>
 
-    d.  Under Internet traffic, change to 'Azure Firewall'
-    
-    e.  Leave 'Private traffic' as 'Bypass Azure Firewall' (we are not
-        inspecting traffic that stays inside Azure)
-    
-    f.  Select both connections,
-    
-        i.  Connect-Scenario-1-Jumpbox-vNet
-    
-        ii. ExRConnection-eastasia-#######
-    
-    g.  Click on Save, you will see a warning message, read it, and
-        acknowledge it.
+        d.  Under Internet traffic, change to 'Azure Firewall'
+        
+        e.  Leave 'Private traffic' as 'Bypass Azure Firewall' (we are not
+            inspecting traffic that stays inside Azure)
+        
+        f.  Select both connections,
+        
+            i.  Connect-Scenario-1-Jumpbox-vNet
+        
+            ii. ExRConnection-eastasia-#######
+        
+        g.  Click on Save, you will see a warning message, read it, and
+            acknowledge it.
 
 > Note: This update takes about 5 minutes to complete.
 </br>
@@ -741,33 +740,33 @@ Next, select the Azure ExpressRoute circuit and click on
 1.  Checking the default route, 0.0.0.0/0 has been propagated to the
     Scenario-1-Jumpbox.
 
-    a.  RDP into the Jumpbox -- if you can no longer connect, go back
-        and check the route table defined in part 1 has been applied to
-        the Servers subnet.
+        a.  RDP into the Jumpbox -- if you can no longer connect, go back
+            and check the route table defined in part 1 has been applied to
+            the Servers subnet.
 
-    b.  Launch IE or Edge and type in
-        [www.ipaddress.com](http://www.ipaddress.com). Check the IP
-        address against the one your recorded in Step 5 of Part 1
-        (above).
+        b.  Launch IE or Edge and type in
+            [www.ipaddress.com](http://www.ipaddress.com). Check the IP
+            address against the one your recorded in Step 5 of Part 1
+            (above).
 
-    c.  The IP address should have change to the IP address of the Azure
-        Firewall. In our case it is 20.239.194.252. This should be
-        different from the IP address associated with the
-        Scenario-1-Jumpbox 20.205.60.208
+        c.  The IP address should have change to the IP address of the Azure
+            Firewall. In our case it is 20.239.194.252. This should be
+            different from the IP address associated with the
+            Scenario-1-Jumpbox 20.205.60.208
 
 2.  From the Scenario-1-Jumpbox, check you can RDP to the
     Scenario-1-Web01 and Scenario-1-Web02 servers.
 
-    a.  RDP to 10.2.104.100 from the Jumbox
+        a.  RDP to 10.2.104.100 from the Jumbox
 
-    b.  Launch IE or Edge and type in
-        [www.ipaddress.com](http://www.ipaddress.com)
+        b.  Launch IE or Edge and type in
+            [www.ipaddress.com](http://www.ipaddress.com)
 
-    c.  You should see the same IP address you get from the Jumpbox,
-        10.239.194.252, this is the public IP address of the Azure
-        Firewall.
+        c.  You should see the same IP address you get from the Jumpbox,
+            10.239.194.252, this is the public IP address of the Azure
+            Firewall.
 
-    d.  Repeat for 10.2.104.101 for Scenario-1-Web02
+        d.  Repeat for 10.2.104.101 for Scenario-1-Web02
     </br></br>
 
 ## Part 7 -- Configuring Application Gateway
@@ -778,46 +777,46 @@ servers running in AVS.
 
 1.  Installing AppGW
 
-    a.  Select the Scenario-1-Jumpbox-vNet
+        a.  Select the Scenario-1-Jumpbox-vNet
 
-    b.  Select 'Subnets'
+        b.  Select 'Subnets'
 
-    c.  Select '+ Subnet'
+        c.  Select '+ Subnet'
 
-    d.  Add a subnet
+        d.  Add a subnet
 
-        i.  Name: AppGW-Subnet
-        
-        ii. Address range: 10.40.219.64/26
-        
-        iii. Click on Save
+            i.  Name: AppGW-Subnet
+            
+            ii. Address range: 10.40.219.64/26
+            
+            iii. Click on Save
 
-    e.  Search for and select 'Application Gateway' (use the blue search
-        bar at the top of the portal screen.
+        e.  Search for and select 'Application Gateway' (use the blue search
+            bar at the top of the portal screen.
 
-    f.  Select '+ Create'
+        f.  Select '+ Create'
 
-    g.  Resource Group: AVS-Scenario-1
+        g.  Resource Group: AVS-Scenario-1
 
-    h.  Application GW name: Scenario-1-AppGW
+        h.  Application GW name: Scenario-1-AppGW
 
-    i.  Region: East Asia (or wherever you are building the lab)
+        i.  Region: East Asia (or wherever you are building the lab)
 
-    j.  Tier: Standard v2
+        j.  Tier: Standard v2
 
-    k.  Enable autoscaling: Yes (default)
+        k.  Enable autoscaling: Yes (default)
 
-    l.  Minimum instance count: 0 (default)
+        l.  Minimum instance count: 0 (default)
 
-    m.  Maximum instance count: 10 (default)
+        m.  Maximum instance count: 10 (default)
 
-    n.  Availability zone: None (default)
+        n.  Availability zone: None (default)
 
-    o.  HTTP2: Disabled (default)
+        o.  HTTP2: Disabled (default)
 
-    p.  Virtual Network: Scenario-1-Jumpbox-vNet
+        p.  Virtual Network: Scenario-1-Jumpbox-vNet
 
-    q.  Subnet: AppGW-Subnet
+        q.  Subnet: AppGW-Subnet
 
 Click 'Next : Frontends'
 
@@ -856,41 +855,41 @@ Click 'Next : Configuration'
 
 2. Configuring the App Gateway 'Listener'
 
-    a.  Listener name: Scenario-1-Listner1
+        a.  Listener name: Scenario-1-Listner1
 
-    b.  FrontEnd IP: Public
+        b.  FrontEnd IP: Public
 
-    c.  Protocol: Http
+        c.  Protocol: Http
 
-    d.  Listner type Basic
+        d.  Listner type Basic
 
-    e.  Error page URL No
+        e.  Error page URL No
 
-    f.  Click 'Add'
+        f.  Click 'Add'
 
 3. Configuring the App Gateway 'Backend targets'
 
-    a.  Backend Pool: Scenario-1-AggGW- BackEndPool
+        a.  Backend Pool: Scenario-1-AggGW- BackEndPool
 
-    b.  Backend target: Add new
+        b.  Backend target: Add new
 
-        i.  Settings name: Scenario-1-BackEndSettings
-        
-        ii. Backend protocol: HTTP
-        
-        iii. Backend port: 80
-        
-        iv. Leave everything else default
-        
-        v.  Click 'Add'
+            i.  Settings name: Scenario-1-BackEndSettings
+            
+            ii. Backend protocol: HTTP
+            
+            iii. Backend port: 80
+            
+            iv. Leave everything else default
+            
+            v.  Click 'Add'
 
-    c.  Click 'Add' on the 'Add a routing' rule page
+        c.  Click 'Add' on the 'Add a routing' rule page
 
-    > This takes you back to the 'Create application gateway' page,
+        > This takes you back to the 'Create application gateway' page,
 
-    d.  Click 'Next : Tags', then click 'Next : Review + create'
+        d.  Click 'Next : Tags', then click 'Next : Review + create'
 
-    e.  Click 'Create'
+        e.  Click 'Create'
 
 </br></br>
 
