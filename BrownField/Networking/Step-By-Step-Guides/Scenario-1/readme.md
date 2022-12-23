@@ -3,7 +3,7 @@
 This lab shows you how to build out "Scenario 1: Secured Virtual WAN hub
 with default route propagation" [Click here](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/azure-vmware/eslz-network-topology-connectivity#scenario-1-secured-virtual-wan-hub-with-default-route-propagation)
 
-ExpressRoute & Global Reach </br>
+How its all connected: ExpressRoute & Global Reach </br>
 
 ![](./media/image1a.png) </br></br>
 
