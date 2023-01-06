@@ -12,8 +12,8 @@ How its all connected: ExpressRoute & Global Reach </br>
 1. A virtual network with 3 subnets containing a jumpbox and application gateway and (optional) a virtual network gateway.
 2. A secured vWAN hub
 
-3. An AVS environment with 2 servers running a web site (We will walk
-   through how to create a vNet and add two servers running IIS).
+3. An AVS environment with 2 servers running a web site (We will walkthrough 
+   how to create a vNet and add two servers running IIS).
 
 4. A connection to on-premises network via ExpressRoute, otherwise you can
    simulate this with an ExpressRoute (ExR) connection from another vNet to
